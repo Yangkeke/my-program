@@ -1,4 +1,23 @@
+function $(s) {
+  return document.querySelectorAll(s);
+}
+
 var lis = $("#list li");
+var size = 64;
+var box = $("#box")[0];
+var width, height;
+var canvas = document.createElement("canvas");
+var ctx = canvas.getContext("2d");
+
+box.appendChild(canvas);
+
+var Dots = [];
+var line;
+
+var mv = new MusicVisualizer({
+  size: size,
+  visualizer: draw
+});
 
 for (var i = 0; i < lis.length; i++) {
   lis[i].onclick = function() {
@@ -6,75 +25,113 @@ for (var i = 0; i < lis.length; i++) {
       lis[j].className = "";
     }
     this.className = 'selected';
-    load("/media/" + this.title);
+    // load("/media/" + this.title);
+    mv.play("/media/" + this.title);
   }
 }
 
-var xhr = new XMLHttpRequest();
-/* 开始创建 获取音频数据 */
-var ac = new (Window.AudioContext || window.webkitAudioContext)();
-/* 创建gainNode对象控制音量大小 */
-var gainNode = ac[ac.createGain ? "createGain" : "createGainNode"]();
-gainNode.connect(ac.destination);
+function random(m, n) {
+  return Math.round(Math.random() * (n - m) + m);
+}
 
-var analyser = ac.createAnalyser();
-analyser.fftSize = 512;
-analyser.connect(gainNode);
+function getDots() {
+  Dots = [];
+  for(var i = 0; i < size; i++) {
+    var x = random(0, width),
+        y = random(0, height),
+        color =  "rgba("+random(0, 255)+","+random(0, 255)+","+random(0, 255)+", 0)";
 
-var source = null;
-var count = 0;
-// source count两变量 都为解决切换播放时的bug
-function load(url) {
-  var n = ++count;
-  /* 每次读取前先判断是否在播放，如有则停止 */
-  source && source[source.stop ? "stop" : "noteOff"]();
-
-  xhr.abort();  // 停止请求
-  xhr.open("GET", url);
-  // 服务端返回的音频数据会以二进制数据形式返回
-  xhr.responseType = "arraybuffer";
-  xhr.onload = function() {
-    if (n != count) return;
-    // console.log(xhr.response);
-    ac.decodeAudioData(xhr.response, function(buffer) {
-      if (n != count) return;
-
-      var bufferSource = ac.createBufferSource();
-
-      bufferSource.buffer = buffer;
-      bufferSource.connect(analyser);
-      // bufferSource.connect(gainNode);
-      // bufferSource.connect(ac.destination);
-      bufferSource[bufferSource.start ? "start" : "noteOn"](0);
-      source = bufferSource;
-    }, function(err) {
-      console.log(err);
+    Dots.push({
+      x: x,
+      y: y,
+      dx: random(1, 3),
+      color: color,
+      cap: 0
     });
+     
   }
-  xhr.send();
 }
 
-/**
- * [$ query选择器]
- */
-function $(s) {
-  return document.querySelectorAll(s);
+function resize() {
+  width = box.clientWidth;
+  height = box.clientHeight;
+  canvas.width = width;
+  canvas.height = height;
+
+  line = ctx.createLinearGradient(0,0,0,height);
+  line.addColorStop(0, "red");
+  line.addColorStop(0.5, "yellow");
+  line.addColorStop(1, "green");
+  
+  getDots();
+}
+resize();
+
+window.onresize = resize;
+
+function draw(arr) {
+  // 创建出来的小块没有过度，应该清掉之前存在的值
+  ctx.clearRect(0, 0, width, height);
+
+  var w = width / size;
+  ctx.fillStyle = line;
+
+  for (var i = 0; i < size; i++) {
+    var o = Dots[i];
+
+    if(draw.type === "column") {
+      var h = arr[i] / 256 * height;
+      var cw = w * 0.6;
+      var capH = cw > 10 ? 10 : cw;
+
+      ctx.fillRect(w * i, height - h, cw, h);      
+      ctx.fillRect(w * i, height - (o.cap + capH), cw, capH);
+
+      o.cap--;
+      if (o.cap < 0) {
+        o.cap = 0;
+      } 
+      if (h > 0 && o.cap < h + 20) {
+        o.cap = h + 20 > height - capH ? height - capH : h + 20;
+      }   
+
+
+    } else if (draw.type === "dot") {      
+      ctx.beginPath();      
+      var r = 10 + arr[i] / 256 * (height > width ? width : height) / 10;
+      ctx.arc(o.x, o.y, r, 0, Math.PI * 2, true);
+
+      var g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, r);
+      g.addColorStop(0, "#fff");
+      g.addColorStop(1, o.color);
+      ctx.fillStyle = g;
+      ctx.fill();
+      o.x += o.dx;
+      o.x = o.x > width ? 0 : o.x;
+    }
+  }
 }
 
-function visualizer() {
-  var arr = new Uint8Array(analyser.frequencyBinCount)
+/* -------------- 绘制canvas -------------- */
+
+/* 点击选中 Dot Column 的切换 */
+
+draw.type = "column";
+var types = $("#type li");
+
+for (var i = 0; i< types.length; i++) {
+  types[i].onclick = function() {
+    for (var j = 0; j < types.length; j++) {
+      types[j].className = "";
+    }
+    this.className = "selected";
+    draw.type = this.getAttribute("data-type");
+  }
 }
 
-/**
- * [changeVolume 改变音量]
- * 通过 range 的value值来改变音量大小
- */
-function changeVolume(percent) {
-  gainNode.gain.value = percent;
-}
 
 $("#volume")[0].onchange = function() {
-  changeVolume(this.value / this.max);
+  mv.changeVolume(this.value / this.max);
 }
 
 $("#volume")[0].onchange();
