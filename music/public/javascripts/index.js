@@ -15,8 +15,11 @@ var xhr = new XMLHttpRequest();
 var ac = new (Window.AudioContext || window.webkitAudioContext)();
 /* 创建gainNode对象控制音量大小 */
 var gainNode = ac[ac.createGain ? "createGain" : "createGainNode"]();
-
 gainNode.connect(ac.destination);
+
+var analyser = ac.createAnalyser();
+analyser.fftSize = 512;
+analyser.connect(gainNode);
 
 var source = null;
 var count = 0;
@@ -39,7 +42,8 @@ function load(url) {
       var bufferSource = ac.createBufferSource();
 
       bufferSource.buffer = buffer;
-      bufferSource.connect(gainNode);
+      bufferSource.connect(analyser);
+      // bufferSource.connect(gainNode);
       // bufferSource.connect(ac.destination);
       bufferSource[bufferSource.start ? "start" : "noteOn"](0);
       source = bufferSource;
@@ -55,6 +59,10 @@ function load(url) {
  */
 function $(s) {
   return document.querySelectorAll(s);
+}
+
+function visualizer() {
+  var arr = new Uint8Array(analyser.frequencyBinCount)
 }
 
 /**

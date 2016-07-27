@@ -6,3 +6,7 @@
 
 node_modules
 dist
+
+doc
+node_module
+src/img
