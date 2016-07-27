@@ -4,13 +4,13 @@ body{
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; background: #666;color:#fff;text-align: center;
 }
 header, .left, .right{position: absolute;}
-header{left:10px;top:10px;right:10px;height:150px;border:1px solid #fff;}
-header h1{font-size: 40px;height:60px;line-height: 60px;}
-.left{left:10px;top:170px;bottom:10px;width:15%;border:1px solid #fff;}
+header{left:10px;top:10px;right:10px;height:150px;}
+header h1{font-size: 36px;height:60px;line-height: 60px;}
+.left{left:10px;top:170px;bottom:10px;width:15%;border:1px solid #fff;overflow:auto;}
 .left ul{overflow: auto;}
-.left ul li {height:30px;line-height: 30px;cursor:pointer;color:#ccc;}
+.left ul li {height:30px;line-height: 30px;cursor:pointer;color:#ccc;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .left ul li.selected{color:#6190dc;}
-.right{top:170px;right:10px;bottom:10px;left: -webkit-calc(15% + 20px);left: calc(15% + 20px);border:1px solid #fff;}
+.right{top:170px;right:10px;bottom:10px;left: -webkit-calc(15% + 20px);left: calc(15% + 20px);}
 
 #type{margin-bottom:10px;}
 #type li{display:inline-block; margin-left:-4px;width:60px; line-height: 30px;height:30px; background-color: transparent; border:1px solid #fff;cursor:pointer;}
@@ -21,6 +21,7 @@ header h1{font-size: 40px;height:60px;line-height: 60px;}
 input[type="range"] {
   -webkit-appearance: none;
   height: 8px;
+  width:120px;
   background: #999;
   border-radius: 10px;
   outline: none;
@@ -44,4 +45,13 @@ input[type="range"]::-moz-range-thumb {
   background: #fff;
   border:none;
   border-radius: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  body{font-size:12px;}
+  header{height:80px;}
+  header h1{font-size: 20px;height:30px;line-height: 30px;}
+  .type li{height:16px; line-height: 16px; width:50px;}
+  .left, .right { top: 100px; }
+  .input[type="range"] {width:70px;}
 }
