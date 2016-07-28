@@ -135,3 +135,27 @@ $("#volume")[0].onchange = function() {
 }
 
 $("#volume")[0].onchange();
+
+/* ---------------------------------------- */
+
+/*$("#add").onclick = function() {
+  $("#upload").click();
+}
+
+if (isApple) {
+  if (isMobile) {
+    $("#volume").className = "range";
+  }
+  $("#add").style.display = "none";
+  $("#music-list").style.top = 0;
+  $("#loading-box").style.display = "block";
+
+  visualizer.addInit(function() {
+    $("#loading").style.display = "none";
+    $("#play").style.display = "block";
+  });
+  $("#play").onclick = function() {
+    $("#loading-box").style.display = "none";
+    visualizer.start();
+  }
+}*/

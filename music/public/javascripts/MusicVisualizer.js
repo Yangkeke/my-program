@@ -85,3 +85,18 @@ MusicVisualizer.prototype.visualize = function() {
   }
   requestAnimationFrame(v);
 }
+
+// 制计分播放当前的bufferSource, 在苹果设备用户触发时调用
+MusicVisualizer.prototype.start = function() {
+  this.source && this.source[this.source.start ? "start" : "noteOn"]
+}
+
+// 应用加载完毕，为苹果设备添加用户触发的事件
+MusicVisualizer.prototype.addInit = function(fn) {
+  this.initCallback = fn;
+}
+
+// 音量调节
+MusicVisualizer.prototype.changeVolume = function(rate) {
+  this.gainNode.gain.value = rate * rate;
+}
