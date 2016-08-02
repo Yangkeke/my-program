@@ -22,5 +22,5 @@ gulp.task('default', function() {
     .pipe(rev())
     .pipe(indexHtmlFilter.restore)
     .pipe(revReplace())
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('dist'));
 });
