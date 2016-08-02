@@ -14,13 +14,13 @@
     left:50%;top:50%;
     margin:-270px 0 0 -170px;
   }
-  
+  .h5_component_base{transition:all .7s;}
+
   </style>
   <link rel="stylesheet" href="../css/H5ComponentBase.css" />
 </head>
 <body>
-  <div class="iphone">
-    
+  <div class="iphone">    
   </div>
 
 
@@ -29,18 +29,37 @@
   <script type="text/javascript">
   var config ={
     type: 'base',    
-    text: '文本内容',   
-    width: 100,
-    height: 100,
+    bg: '../img/page1-people.png',  
+    width: 514,
+    height: 306,
+    css: {
+      bottom: 0,
+      opacity: 0
+    },
+    animateIn: {
+      bottom: 80,
+      opacity: 1
+    },
+    animateOut: {
+      bottom: 0,
+      opacity: 0
+    },
+    center: true,
   }
 
   var h5 = new H5ComponentBase('myName',config);
   $(".iphone").append(h5);
 
   var leave = true;
-  $('body').click(function(){
+  /*$('body').click(function(){
     leave =! leave ;
     $('.h5_component').trigger( leave ? 'onLeave' : 'onLoad' );
+  });*/
+
+  $("body").click(function() {
+    leave = !leave;
+
+    $(".h5_component").trigger(leave ? 'onLeave' : 'onLoad');
   });
 
   </script>
