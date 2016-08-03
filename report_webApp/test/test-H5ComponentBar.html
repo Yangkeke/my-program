@@ -18,48 +18,44 @@
 
   </style>
   <link rel="stylesheet" href="../css/H5ComponentBase.css" />
+  <link rel="stylesheet" href="../css/H5ComponentBar.css" />
 </head>
 <body>
   <div class="iphone">    
   </div>
 
-  <!-- 用于开发测试 H5ComponentBase对象 -->
+  
+  <!-- 用于开发测试 H5ComponentBar对象 -->
   <script src="../js/vendor/jquery-1.9.1.min.js"></script>
   <script src="../js/H5ComponentBase.js"></script>
+  <script src="../js/H5ComponentBar.js"></script> 
   <script type="text/javascript">
   var config ={
-    type: 'base',    
-    bg: '../img/page1-people.png',  
-    width: 514,
-    height: 306,
+    type: 'bar',        
+    width: 400,
+    height: 600,
+    data: [
+      ['javascript', 0.5, '#ff7676'],
+      ['HTML/CSS', 0.25],
+      ['HTML5', 0.4,],
+      ['CSS3', 0.6, ],
+      ['jQuery', 0.5],
+      ['Node.js', 0.3],
+      ['React.js', 0.2]
+    ],
     css: {
-      bottom: 0,
-      opacity: 0
-    },
-    animateIn: {
-      bottom: 80,
-      opacity: 1
-    },
-    animateOut: {
-      bottom: 0,
-      opacity: 0
-    },
-    center: true,
+      top: 200
+    },    
+    center: true
   }
 
-  var h5 = new H5ComponentBase('myName',config);
+  var h5 = new H5ComponentBar('myBarComponent',config);
   $(".iphone").append(h5);
 
   var leave = true;
   $('body').click(function(){
     leave =! leave ;
     $('.h5_component').trigger( leave ? 'onLeave' : 'onLoad' );
-  });
-
-  $("body").click(function() {
-    leave = !leave;
-
-    $(".h5_component").trigger(leave ? 'onLeave' : 'onLoad');
   });
 
   </script>
