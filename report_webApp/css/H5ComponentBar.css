@@ -29,7 +29,7 @@
 
 .h5_component_bar .rate .bg{
   background-color: #99c0ff;
-  width: 100%;
+  width: 0%;
   height: 100%;
   top: 0;
   left: 0;
@@ -42,11 +42,12 @@
   float: left;
   position: absolute;
   right: -25px;
+  opacity: 0;
 }
 
 .h5_component_bar_load .rate .bg{
-  -webikit-transition: all 1s;
-  transition: all 1s;
+  -webikit-transition: all 1s .3s;
+  transition: all 1s .3s;
   width:100%;
 }
 
