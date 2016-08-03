@@ -1,0 +1,16 @@
+/* 折线图样式 */
+
+.h5_component_polyline{
+  position: relative;
+}
+
+.h5_component_polyline canvas {
+  // 用canvas做动画会进行分层，要用到z-index
+  position: absolute;
+  left: 0;
+  top: 0;  
+  width: 100%;
+  height: 100%;
+  // background-color: #eee;
+}
+
