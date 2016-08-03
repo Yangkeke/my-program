@@ -10,9 +10,10 @@ var H5ComponentPolyline = function(name,config){
       canvas = document.createElement('canvas'),
       context = canvas.getContext('2d');
 
-  // 加入一个canvas画布（网格线背景）
+  // 加入一个canvas画布 - 网格线背景
   canvas.width = context.width = w;
   canvas.height = context.height = h;
+  component.append(canvas);
 
   // 水平网格线 100份 -> 10份  
   context.beginPath();
@@ -34,9 +35,45 @@ var H5ComponentPolyline = function(name,config){
     context.moveTo(x, 0);
     context.lineTo(x, h);  
   }
+  context.stroke();  
+
+  /* ------------------------------------------ */
+  // 加入画布 - 数据层
+  var canvas = document.createElement('canvas'),
+      context = canvas.getContext('2d');
+
+  canvas.width = context.width = w;
+  canvas.height = context.height = h;
+  component.append(canvas);
+
+  // 绘制折线数据
+  context.beginPath();
+  context.lineWidth = 3;
+  context.strokeStyle = "#ff8878";
+
+  var x = 0;
+  var y = 0;
+  var row_w = w / (config.data.length + 1);
+
+  step = config.data.length + 1;
+
+  // 画点
+  for (i in config.data) {
+    var item = config.data[i];
+
+    x = row_w * i + row_w;
+    y = h * (1 - item[1]);
+
+    context.moveTo(x, y);
+    context.arc(x, y, 5, 0, 2*Math.PI);
+
+    console.log(item);
+  }
+
+  // 连线
 
   context.stroke();
-  component.append(canvas);
+
 
   return component;
 }
