@@ -1,7 +1,7 @@
 /* 
 * @Author: fys
 * @Date:   2016-09-18 11:19:18
-* @Last Modified time: 2016-09-18 11:34:12
+* @Last Modified time: 2016-09-18 13:41:07
 */
 
 
@@ -64,3 +64,27 @@ function serveStatic(res, cache, absPath) {
     })
   }
 }
+
+// 2. 创建HTTP服务器
+var server = http.createServer(function(req, res) {
+  var filePath = false;
+
+  if (req.url == '') {
+    filePath = 'public/index.html'
+  } else {
+    filePath = 'public' + req.url
+  }
+
+  var absPath = './' + filePath
+  serverStatic(res, cache, absPath)
+})
+
+// 3. 启动HTTP服务器
+server.listen(3000, function() {
+  console.log("Server listening on port 3000.");
+})
+
+
+/* 设置Socket.IO 服务器 */
+var chartServer = require('./lib/chat_server')
+ChatServer.listen(server)
