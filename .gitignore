@@ -1,3 +1,5 @@
 report_webApp/js/jquery-1.9.1.min.js
 report_webApp/js/vendor/jquery.fullpage.min.css
 report_webApp/js/vendor/jquery.fullpage.min.js
+
+node_modules
