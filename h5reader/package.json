@@ -1,0 +1,20 @@
+{
+  "name": "h5reader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "auto-reload": "^0.0.2",
+    "co-views": "^2.1.0",
+    "koa": "^1.2.5",
+    "koa-route": "^2.4.2",
+    "koa-static-server": "^1.0.0",
+    "koa-views": "^5.2.0",
+    "webpack": "^2.2.1"
+  }
+}
